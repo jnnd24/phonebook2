@@ -112,10 +112,6 @@ public class PhoneController extends HttpServlet {
 		}
 		
 		
-		
-		/*
-		
-		*/
 	}
 
 	//post방식으로 요청 시 호출 메소드
