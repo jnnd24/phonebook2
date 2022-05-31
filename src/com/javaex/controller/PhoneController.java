@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.javaex.dao.PhoneDao;
+import com.javaex.util.WebUtil;
 import com.javaex.vo.PersonVo;
 
 /**
@@ -43,13 +44,22 @@ public class PhoneController extends HttpServlet {
 			request.setAttribute("pList", phoneList);
 			
 			//데이터 + html 섞기 --> jsp로 포워딩
+			//WebUtil webUtil = new WebUtil();
+			WebUtil.forward(request, response, "./WEB-INF/list.jsp");
+			
+			/*
 			RequestDispatcher rd = request.getRequestDispatcher("./list.jsp");
 			rd.forward(request, response);
+			*/
 		} else if("writeForm".equals(action)) {
 			System.out.println("등록폼");
 			
+			//포워드
+			WebUtil.forward(request, response, "./WEB-INF/writeForm.jsp");
+			/*
 			RequestDispatcher rd = request.getRequestDispatcher("./writeForm.jsp");
 			rd.forward(request, response);
+			*/
 		}else if("write".equals(action)) { //등록일 때
 			//파라미터에서 값 꺼내기
 			String name = request.getParameter("name");
@@ -71,7 +81,13 @@ public class PhoneController extends HttpServlet {
 			aaaaRequestDispatcher rd = request.getRequestDispatcher("./list.jsp");
 			rd.forward(request, response);
 			*/
-			response.sendRedirect("/phonebook2/pbc?action=list");
+			//webUtil.redirect(request, response, "/phonebook2/pbc?action=list");
+			
+			
+			//WebUtil webUtil = new WebUtil();
+			WebUtil.redirect(request, response, "/phonebook2/WEB-INF/pbc?action=list");
+			
+			//response.sendRedirect("/phonebook2/pbc?action=list");
 			
 			
 		}else if("delete".equals(action)){
@@ -80,7 +96,8 @@ public class PhoneController extends HttpServlet {
 			phoneDao.personDelete(personid);
 			
 			//리스트로 리다이렉트
-			response.sendRedirect("/phonebook2/pbc?action=list");
+			WebUtil.redirect(request, response, "/phonebook2/pbc?action=list");
+			//response.sendRedirect("/phonebook2/pbc?action=list");
 			
 		}else if("updateForm".equals(action)) {
 			//포워드 업데이트폼
@@ -91,10 +108,12 @@ public class PhoneController extends HttpServlet {
 			PersonVo personVo = phoneDao.getPerson(personid);
 			request.setAttribute("personVo", personVo);
 			
+			WebUtil.forward(request, response, "./WEB-INF/updateForm.jsp");
+			/*
 			RequestDispatcher rd = request.getRequestDispatcher("./updateForm.jsp");
-			
-			
 			rd.forward(request, response);
+			*/
+			
 		}else if("update".equals(action)) {
 			PhoneDao phoneDao = new PhoneDao();
 			int personid = Integer.parseInt(request.getParameter("personid"));
@@ -106,7 +125,7 @@ public class PhoneController extends HttpServlet {
 			
 			phoneDao.personUpdate(personVo);
 			
-			response.sendRedirect("/phonebook2/pbc?action=list");
+			WebUtil.redirect(request, response, "/phonebook2/pbc?action=list");
 		}else {
 			System.out.println("action 파라미터 없음");
 		}
